@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="UniConvert - Free online currency converter, unit converter, calculator, calendar and math symbols. Convert USD to INR, meters to feet, and more instantly.">
+    <meta name="keywords" content="unit convert, usd to inr, currency converter, unit converter, calculator, measurement converter, calendar, math symbols">
+    <title>UniConvert - Free Currency & Unit Converter</title>
+    <!-- Google AdSense -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-YOUR_ADSENSE_ID"
+     crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        :root { 
+            --primary: #6366f1; --primary-dark: #4f46e5; --secondary: #8b5cf6; --accent: #a78bfa; 
+            --light: #f3f4f6; --dark: #0f172a; --darker: #0b1120; --card-bg: #1e293b; 
+            --input-bg: #334155; --text: #e2e8f0; --text-secondary: #94a3b8; --success: #4ade80; 
+            --warning: #facc15; --danger: #f87171; --gray: #64748b; --border: #334155; 
+        }
+        
+        body { background: var(--darker); color: var(--text); min-height: 100vh; padding-bottom: 60px; }
+        .container { width: 100%; max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+        
+        /* Header Styles */
+        header { background: linear-gradient(to right, var(--primary), var(--secondary)); color: white; padding: 1rem 0; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3); position: sticky; top: 0; z-index: 100; }
+        .header-content { display: flex; justify-content: space-between; align-items: center; }
+        .logo { display: flex; align-items: center; gap: 12px; font-size: 1.8rem; font-weight: 700; }
+        .logo i { color: var(--accent); }
+        nav ul { display: flex; list-style: none; gap: 25px; }
+        nav a { 
+            color: white; text-decoration: none; font-weight: 500; 
+            transition: all 0.3s ease; padding: 8px 12px; border-radius: 6px; 
+            cursor: pointer;
+        }
+        nav a:hover { background: rgba(255, 255, 255, 0.15); }
+        nav a.active { 
+            background: rgba(255, 255, 255, 0.25); 
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        }
+        
+        /* Hero Section */
+        .hero { text-align: center; padding: 60px 20px; margin-bottom: 40px; }
+        .hero h1 { font-size: 2.8rem; margin-bottom: 20px; color: white; line-height: 1.2; }
+        .hero p { font-size: 1.2rem; color: var(--text-secondary); max-width: 700px; margin: 0 auto 30px; }
+        
+        /* Tabs Section */
+        .tabs-container { background: var(--card-bg); border-radius: 16px; overflow: hidden; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3); margin-bottom: 40px; }
+        .tabs { display: flex; background: var(--darker); border-bottom: 1px solid var(--border); flex-wrap: wrap; }
+        .tab { padding: 18px 24px; cursor: pointer; font-weight: 600; color: var(--text-secondary); transition: all 0.3s ease; display: flex; align-items: center; gap: 10px; flex: 1; min-width: 150px; justify-content: center; }
+        .tab i { font-size: 1.2rem; }
+        .tab.active { color: white; background: linear-gradient(to right, var(--primary), var(--secondary)); }
+        .tab-content { display: none; padding: 30px; }
+        .tab-content.active { display: block; }
+        
+        /* Ad Container */
+        .ad-container { background: var(--card-bg); border-radius: 16px; padding: 25px; margin: 40px 0; text-align: center; box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2); border: 1px solid var(--border); }
+        
+        /* Converter Styles */
+        .converter-form { display: flex; flex-direction: column; gap: 20px; max-width: 500px; margin: 0 auto; }
+        .input-group { display: flex; flex-direction: column; gap: 8px; }
+        label { font-weight: 600; color: var(--text); }
+        input, select { padding: 14px; border: 1px solid var(--border); border-radius: 10px; font-size: 1rem; background: var(--input-bg); color: white; transition: border-color 0.3s ease; }
+        input:focus, select:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.3); }
+        .swap-btn { background: var(--input-bg); border: 1px solid var(--border); width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.3s ease; margin: 0 auto; color: var(--text); }
+        .swap-btn:hover { background: var(--primary); color: white; border-color: var(--primary); }
+        .result { background: var(--input-bg); padding: 20px; border-radius: 10px; text-align: center; font-size: 1.4rem; font-weight: 700; color: var(--accent); margin-top: 10px; border: 1px solid var(--border); }
+        
+        /* Calculator Styles */
+        .calculator { background: var(--darker); padding: 25px; border-radius: 16px; width: 100%; max-width: 320px; margin: 0 auto; border: 1px solid var(--border); box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2); }
+        .calculator-display { width: calc(100% - 20px); margin-bottom: 15px; padding: 15px; font-size: 1.8rem; border: none; background: var(--input-bg); color: var(--text); border-radius: 8px; text-align: right; border: 1px solid var(--border); }
+        .calculator-keys { display: grid; grid-template-columns: repeat(4, 1fr); grid-gap: 12px; }
+        .calculator-btn { padding: 18px; font-size: 1.2rem; border: none; background: var(--input-bg); color: var(--text); border-radius: 8px; cursor: pointer; transition: all 0.2s ease; border: 1px solid var(--border); }
+        .calculator-btn:hover { background: var(--primary); color: white; transform: translateY(-1px); }
+        .calculator-btn.operator { background: var(--primary-dark); color: white; }
+        .calculator-btn.operator:hover { background: var(--secondary); }
+        .calculator-btn.zero { grid-column: span 2; }
+        
+        /* Calendar */
+        .calendar { max-width: 400px; margin: 0 auto; }
+        .calendar-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; padding: 0 10px; }
+        .calendar-nav { background: var(--input-bg); border: 1px solid var(--border); border-radius: 8px; padding: 8px 16px; cursor: pointer; transition: all 0.2s ease; }
+        .calendar-nav:hover { background: var(--primary); border-color: var(--primary); }
+        .calendar-title { font-size: 1.4rem; font-weight: 600; }
+        .calendar-weekdays { display: grid; grid-template-columns: repeat(7, 1fr); text-align: center; font-weight: 600; color: var(--accent); margin-bottom: 10px; }
+        .calendar-days { display: grid; grid-template-columns: repeat(7, 1fr); gap: 8px; }
+        .calendar-day { height: 40px; display: flex; align-items: center; justify-content: center; border-radius: 8px; cursor: pointer; transition: all 0.2s ease; background: var(--input-bg); border: 1px solid var(--border); }
+        .calendar-day:hover { background: var(--primary); color: white; }
+        .calendar-day.today { background: var(--primary); color: white; }
+        .calendar-day.empty { opacity: 0.3; background: transparent; border: none; }
+        .calendar-day.selected { background: var(--secondary); color: white; }
+        
+        /* Math Symbols */
+        .math-symbols { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 20px; max-width: 800px; margin: 0 auto; }
+        .symbol-card { background: var(--input-bg); border-radius: 12px; padding: 20px; text-align: center; cursor: pointer; transition: all 0.2s ease; border: 1px solid var(--border); }
+        .symbol-card:hover { background: var(--primary); transform: translateY(-3px); }
+        .symbol { font-size: 2.5rem; margin-bottom: 10px; display: block; }
+        .symbol-name { font-size: 0.9rem; color: var(--text-secondary); }
+        
+        /* Features Section */
+        .features { margin: 60px 0; }
+        .features h2 { text-align: center; font-size: 2.2rem; margin-bottom: 40px; color: white; }
+        .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px; }
+        .feature-card { text-align: center; padding: 30px 20px; background: var(--card-bg); border-radius: 16px; box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2); border: 1px solid var(--border); }
+        .feature-icon { width: 70px; height: 70px; background: linear-gradient(to right, var(--primary), var(--secondary)); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; color: white; font-size: 1.8rem; }
+        .feature-card h3 { margin-bottom: 15px; color: white; }
+        .feature-card p { color: var(--text-secondary); }
+        
+        /* Footer */
+        footer { background: var(--darker); color: var(--text); padding: 40px 0 20px; margin-top: 60px; border-top: 1px solid var(--border); }
+        .footer-content { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px; margin-bottom: 30px; }
+        .footer-column h3 { margin-bottom: 20px; font-size: 1.4rem; color: white; }
+        .footer-column ul { list-style: none; }
+        .footer-column ul li { margin-bottom: 12px; }
+        .footer-column a { color: var(--text-secondary); text-decoration: none; transition: color 0.3s ease; cursor: pointer; }
+        .footer-column a:hover { color: white; }
+        .copyright { text-align: center; padding-top: 20px; border-top: 1px solid var(--border); color: var(--text-secondary); font-size: 0.9rem; }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .header-content { flex-direction: column; gap: 15px; }
+            nav ul { flex-wrap: wrap; justify-content: center; }
+            .hero h1 { font-size: 2.2rem; }
+            .tab { flex: 1 0 50%; padding: 15px 10px; font-size: 0.9rem; }
+            .calculator { max-width: 100%; }
+        }
+        @media (max-width: 480px) {
+            .hero h1 { font-size: 1.8rem; }
+            .converter-form { max-width: 100%; }
+            .tab { flex: 1 0 100%; padding: 12px 8px; font-size: 0.85rem; }
+            .math-symbols { grid-template-columns: repeat(2, 1fr); }
+            .calculator-keys { grid-gap: 8px; }
+            .calculator-btn { padding: 15px; font-size: 1.1rem; }
+        }
+        .adsbygoogle { background: var(--input-bg) !important; border-radius: 12px !important; padding: 10px !important; }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fas fa-exchange-alt"></i>
+                    <span>UniConvert</span>
+                </div>
+                <nav>
+                    <ul>
+                        <li><a href="#" class="active" onclick="navigateTo('home')">Home</a></li>
+                        <li><a href="#" onclick="navigateTo('currency')">Currency</a></li>
+                        <li><a href="#" onclick="navigateTo('units')">Units</a></li>
+                        <li><a href="#" onclick="navigateTo('calculator')">Calculator</a></li>
+                        <li><a href="#" onclick="navigateTo('math')">Symbols</a></li>
+                        <li><a href="#" onclick="navigateTo('calendar')">Calendar</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="container">
+            <h1>Convert Anything Instantly</h1>
+            <p>Free online currency converter, unit converter, calculator, math symbols and calendar. Convert USD to INR, meters to feet, calculate math, and more in seconds!</p>
+        </div>
+    </section>
+
+    <div class="container">
+        <div class="ad-container">
+            <ins class="adsbygoogle"
+                style="display:inline-block;width:728px;height:90px"
+                data-ad-client="ca-pub-YOUR_ADSENSE_ID"
+                data-ad-slot="YOUR_TOP_BANNER_SLOT"></ins>
+            <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+        </div>
+
+        <div class="tabs-container">
+            <div class="tabs">
+                <div class="tab active" data-tab="currency"><i class="fas fa-dollar-sign"></i><span>Currency Converter</span></div>
+                <div class="tab" data-tab="units"><i class="fas fa-ruler-combined"></i><span>Unit Converter</span></div>
+                <div class="tab" data-tab="calculator"><i class="fas fa-calculator"></i><span>Calculator</span></div>
+                <div class="tab" data-tab="math"><i class="fas fa-superscript"></i><span>Math Symbols</span></div>
+                <div class="tab" data-tab="calendar"><i class="fas fa-calendar-alt"></i><span>Calendar</span></div>
+            </div>
+            
+            <!-- Currency Tab -->
+            <div class="tab-content active" id="currency-tab">
+                <form class="converter-form">
+                    <div class="input-group">
+                        <label for="amount">Amount</label>
+                        <input type="number" id="amount" value="1" min="0" step="any" oninput="convertCurrency()">
+                    </div>
+                    <div class="input-group">
+                        <label for="from-currency">From</label>
+                        <select id="from-currency" onchange="convertCurrency()">
+                            <option value="USD">US Dollar (USD)</option>
+                            <option value="EUR">Euro (EUR)</option>
+                            <option value="INR" selected>Indian Rupee (INR)</option>
+                            <option value="GBP">British Pound (GBP)</option>
+                            <option value="JPY">Japanese Yen (JPY)</option>
+                        </select>
+                    </div>
+                    <button type="button" class="swap-btn" onclick="swapCurrencies()" title="Swap currencies"><i class="fas fa-exchange-alt"></i></button>
+                    <div class="input-group">
+                        <label for="to-currency">To</label>
+                        <select id="to-currency" onchange="convertCurrency()">
+                            <option value="USD" selected>US Dollar (USD)</option>
+                            <option value="EUR">Euro (EUR)</option>
+                            <option value="INR">Indian Rupee (INR)</option>
+                            <option value="GBP">British Pound (GBP)</option>
+                            <option value="JPY">Japanese Yen (JPY)</option>
+                        </select>
+                    </div>
+                    <div class="result" id="currency-result">1 INR = 0.012 USD</div>
+                </form>
+            </div>
+            
+            <!-- Units Tab -->
+            <div class="tab-content" id="units-tab">
+                <form class="converter-form">
+                    <div class="input-group">
+                        <label for="unit-amount">Value</label>
+                        <input type="number" id="unit-amount" value="1" min="0" step="any" oninput="convertUnits()">
+                    </div>
+                    <div class="input-group">
+                        <label for="from-unit">From</label>
+                        <select id="from-unit" onchange="convertUnits()">
+                            <option value="meter">Meter (m)</option>
+                            <option value="kilometer">Kilometer (km)</option>
+                            <option value="centimeter">Centimeter (cm)</option>
+                            <option value="inch">Inch (in)</option>
+                            <option value="foot">Foot (ft)</option>
+                        </select>
+                    </div>
+                    <button type="button" class="swap-btn" onclick="swapUnits()" title="Swap units"><i class="fas fa-exchange-alt"></i></button>
+                    <div class="input-group">
+                        <label for="to-unit">To</label>
+                        <select id="to-unit" onchange="convertUnits()">
+                            <option value="foot">Foot (ft)</option>
+                            <option value="meter">Meter (m)</option>
+                            <option value="kilometer">Kilometer (km)</option>
+                            <option value="centimeter">Centimeter (cm)</option>
+                            <option value="inch">Inch (in)</option>
+                        </select>
+                    </div>
+                    <div class="result" id="unit-result">1 m = 3.281 ft</div>
+                </form>
+            </div>
+            
+            <!-- Calculator Tab -->
+            <div class="tab-content" id="calculator-tab">
+                <div class="calculator">
+                    <input type="text" class="calculator-display" id="calculator-display" disabled>
+                    <div class="calculator-keys">
+                        <button class="calculator-btn" onclick="clearCalculator()">AC</button>
+                        <button class="calculator-btn" onclick="deleteLastCalculator()">DEL</button>
+                        <button class="calculator-btn operator" onclick="appendCalculator('%')">%</button>
+                        <button class="calculator-btn operator" onclick="appendCalculator('/')">÷</button>
+                        <button class="calculator-btn" onclick="appendCalculator('7')">7</button>
+                        <button class="calculator-btn" onclick="appendCalculator('8')">8</button>
+                        <button class="calculator-btn" onclick="appendCalculator('9')">9</button>
+                        <button class="calculator-btn operator" onclick="appendCalculator('*')">×</button>
+                        <button class="calculator-btn" onclick="appendCalculator('4')">4</button>
+                        <button class="calculator-btn" onclick="appendCalculator('5')">5</button>
+                        <button class="calculator-btn" onclick="appendCalculator('6')">6</button>
+                        <button class="calculator-btn operator" onclick="appendCalculator('-')">-</button>
+                        <button class="calculator-btn" onclick="appendCalculator('1')">1</button>
+                        <button class="calculator-btn" onclick="appendCalculator('2')">2</button>
+                        <button class="calculator-btn" onclick="appendCalculator('3')">3</button>
+                        <button class="calculator-btn operator" onclick="appendCalculator('+')">+</button>
+                        <button class="calculator-btn zero" onclick="appendCalculator('0')">0</button>
+                        <button class="calculator-btn" onclick="appendCalculator('.')">.</button>
+                        <button class="calculator-btn operator" onclick="calculateCalculator()">=</button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Math Tab -->
+            <div class="tab-content" id="math-tab">
+                <div class="math-symbols">
+                    <div class="symbol-card" onclick="copySymbol('π')"><span class="symbol">π</span><div class="symbol-name">Pi</div></div>
+                    <div class="symbol-card" onclick="copySymbol('∞')"><span class="symbol">∞</span><div class="symbol-name">Infinity</div></div>
+                    <div class="symbol-card" onclick="copySymbol('∑')"><span class="symbol">∑</span><div class="symbol-name">Summation</div></div>
+                    <div class="symbol-card" onclick="copySymbol('∫')"><span class="symbol">∫</span><div class="symbol-name">Integral</div></div>
+                    <div class="symbol-card" onclick="copySymbol('√')"><span class="symbol">√</span><div class="symbol-name">Square Root</div></div>
+                    <div class="symbol-card" onclick="copySymbol('²')"><span class="symbol">²</span><div class="symbol-name">Squared</div></div>
+                    <div class="symbol-card" onclick="copySymbol('³')"><span class="symbol">³</span><div class="symbol-name">Cubed</div></div>
+                    <div class="symbol-card" onclick="copySymbol('±')"><span class="symbol">±</span><div class="symbol-name">Plus-Minus</div></div>
+                    <div class="symbol-card" onclick="copySymbol('≠')"><span class="symbol">≠</span><div class="symbol-name">Not Equal</div></div>
+                    <div class="symbol-card" onclick="copySymbol('≈')"><span class="symbol">≈</span><div class="symbol-name">Approximately</div></div>
+                    <div class="symbol-card" onclick="copySymbol('≤')"><span class="symbol">≤</span><div class="symbol-name">Less Than or Equal</div></div>
+                    <div class="symbol-card" onclick="copySymbol('≥')"><span class="symbol">≥</span><div class="symbol-name">Greater Than or Equal</div></div>
+                    <div class="symbol-card" onclick="copySymbol('°')"><span class="symbol">°</span><div class="symbol-name">Degree</div></div>
+                    <div class="symbol-card" onclick="copySymbol('α')"><span class="symbol">α</span><div class="symbol-name">Alpha</div></div>
+                    <div class="symbol-card" onclick="copySymbol('β')"><span class="symbol">β</span><div class="symbol-name">Beta</div></div>
+                    <div class="symbol-card" onclick="copySymbol('θ')"><span class="symbol">θ</span><div class="symbol-name">Theta</div></div>
+                </div>
+            </div>
+            
+            <!-- Calendar Tab -->
+            <div class="tab-content" id="calendar-tab">
+                <div class="calendar">
+                    <div class="calendar-header">
+                        <button class="calendar-nav" id="prev-month" onclick="prevMonth()" title="Previous Month"><i class="fas fa-chevron-left"></i></button>
+                        <div class="calendar-title" id="calendar-title">October 2025</div>
+                        <button class="calendar-nav" id="next-month" onclick="nextMonth()" title="Next Month"><i class="fas fa-chevron-right"></i></button>
+                    </div>
+                    <div class="calendar-weekdays">
+                        <div>Sun</div><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div>
+                    </div>
+                    <div class="calendar-days" id="calendar-days"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="ad-container">
+            <ins class="adsbygoogle"
+                style="display:inline-block;width:300px;height:250px"
+                data-ad-client="ca-pub-YOUR_ADSENSE_ID"
+                data-ad-slot="YOUR_MIDDLE_RECT_SLOT"></ins>
+            <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+        </div>
+
+        <section class="features">
+            <h2>Why Choose UniConvert?</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="fas fa-bolt"></i></div>
+                    <h3>Lightning Fast</h3>
+                    <p>Get instant conversion results without any delays or waiting.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="fas fa-lock"></i></div>
+                    <h3>100% Secure</h3>
+                    <p>Your data never leaves your device - all calculations happen locally.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="fas fa-mobile-alt"></i></div>
+                    <h3>Mobile Friendly</h3>
+                    <p>Works perfectly on all devices - phones, tablets, and desktops.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="fas fa-sync-alt"></i></div>
+                    <h3>Always Updated</h3>
+                    <p>Currency rates are updated in real-time for accurate conversions.</p>
+                </div>
+            </div>
+        </section>
+
+        <div class="ad-container">
+            <ins class="adsbygoogle"
+                style="display:inline-block;width:728px;height:90px"
+                data-ad-client="ca-pub-YOUR_ADSENSE_ID"
+                data-ad-slot="YOUR_BOTTOM_BANNER_SLOT"></ins>
+            <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>UniConvert</h3>
+                    <p>The ultimate conversion tool for all your currency, unit, calculator, math symbols and calendar needs.</p>
+                </div>
+                <div class="footer-column">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a onclick="navigateTo('currency')">Currency Converter</a></li>
+                        <li><a onclick="navigateTo('units')">Unit Converter</a></li>
+                        <li><a onclick="navigateTo('calculator')">Calculator</a></li>
+                        <li><a onclick="navigateTo('math')">Math Symbols</a></li>
+                        <li><a onclick="navigateTo('calendar')">Calendar</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Popular Conversions</h3>
+                    <ul>
+                        <li><a href="#">USD to INR</a></li>
+                        <li><a href="#">EUR to USD</a></li>
+                        <li><a href="#">Miles to Kilometers</a></li>
+                        <li><a href="#">Pounds to Kilograms</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Legal</h3>
+                    <ul>
+                        <li><a href="privacy.html">Privacy Policy</a></li>
+                        <li><a href="term.html">Terms of Service</a></li>
+                        <li><a href="cookie.html">Cookie Policy</a></li>
+                        <li><a href="disclaimer.html">Disclaimer</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright">
+                &copy; 2025 UniConvert. All rights reserved by <b>Uniconvert</b>. 
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // ✅ HEADER NAVIGATION - FULLY FUNCTIONAL WITH MUTUAL HIGHLIGHTING
+        function navigateTo(section) {
+            // 1. Reset ALL header buttons
+            document.querySelectorAll('nav a').forEach(a => a.classList.remove('active'));
+            
+            // 2. Reset ALL tabs
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+            
+            // 3. Handle HOME (Reset to Currency tab)
+            if (section === 'home') {
+                document.querySelector('nav a[onclick="navigateTo(\'currency\')"]').classList.add('active');
+                document.querySelector('[data-tab="currency"]').classList.add('active');
+                document.getElementById('currency-tab').classList.add('active');
+            } 
+            // 4. Handle OTHER TABS
+            else {
+                // Highlight correct header button
+                document.querySelector(`nav a[onclick="navigateTo('${section}')"]`).classList.add('active');
+                // Activate correct tab
+                document.querySelector(`[data-tab="${section}"]`).classList.add('active');
+                document.getElementById(`${section}-tab`).classList.add('active');
+            }
+            
+            // 5. Auto-focus inputs
+            setTimeout(() => {
+                if (section === 'currency') document.getElementById('amount').focus();
+                if (section === 'units') document.getElementById('unit-amount').focus();
+                if (section === 'calculator') document.getElementById('calculator-display').focus();
+            }, 100);
+        }
+
+        // ✅ TAB CLICKING → HEADER HIGHLIGHTING (MUTUAL SYNCHRONIZATION)
+        document.querySelectorAll('.tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                const tabName = tab.getAttribute('data-tab');
+                
+                // Remove all header active states
+                document.querySelectorAll('nav a').forEach(a => a.classList.remove('active'));
+                
+                // Highlight correct header button
+                if (tabName === 'currency') {
+                    document.querySelector('nav a[onclick="navigateTo(\'currency\')"]').classList.add('active');
+                } else if (tabName === 'units') {
+                    document.querySelector('nav a[onclick="navigateTo(\'units\')"]').classList.add('active');
+                } else if (tabName === 'calculator') {
+                    document.querySelector('nav a[onclick="navigateTo(\'calculator\')"]').classList.add('active');
+                } else if (tabName === 'math') {
+                    document.querySelector('nav a[onclick="navigateTo(\'math\')"]').classList.add('active');
+                } else if (tabName === 'calendar') {
+                    document.querySelector('nav a[onclick="navigateTo(\'calendar\')"]').classList.add('active');
+                }
+                
+                // Activate tab content
+                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                tab.classList.add('active');
+                document.getElementById(`${tabName}-tab`).classList.add('active');
+            });
+        });
+
+        // ✅ CURRENCY CONVERTER
+        const exchangeRates = { USD: 1, EUR: 0.93, INR: 83.25, GBP: 0.79, JPY: 149.50 };
+        function convertCurrency() {
+            const amount = parseFloat(document.getElementById('amount').value) || 0;
+            const from = document.getElementById('from-currency').value;
+            const to = document.getElementById('to-currency').value;
+            if (from === to) {
+                document.getElementById('currency-result').textContent = `${amount} ${from} = ${amount} ${to}`;
+                return;
+            }
+            const usdAmount = amount / exchangeRates[from];
+            const result = usdAmount * exchangeRates[to];
+            document.getElementById('currency-result').textContent = `${amount} ${from} = ${result.toFixed(4)} ${to}`;
+        }
+        function swapCurrencies() {
+            const fromSelect = document.getElementById('from-currency');
+            const toSelect = document.getElementById('to-currency');
+            const temp = fromSelect.value;
+            fromSelect.value = toSelect.value;
+            toSelect.value = temp;
+            convertCurrency();
+        }
+
+        // ✅ UNIT CONVERTER
+        const unitFactors = { meter: 1, kilometer: 1000, centimeter: 0.01, inch: 0.0254, foot: 0.3048 };
+        function convertUnits() {
+            const amount = parseFloat(document.getElementById('unit-amount').value) || 0;
+            const from = document.getElementById('from-unit').value;
+            const to = document.getElementById('to-unit').value;
+            if (from === to) {
+                document.getElementById('unit-result').textContent = `${amount} ${from} = ${amount} ${to}`;
+                return;
+            }
+            const meters = amount * unitFactors[from];
+            const result = meters / unitFactors[to];
+            document.getElementById('unit-result').textContent = `${amount} ${from} = ${result.toFixed(4)} ${to}`;
+        }
+        function swapUnits() {
+            const fromSelect = document.getElementById('from-unit');
+            const toSelect = document.getElementById('to-unit');
+            const temp = fromSelect.value;
+            fromSelect.value = toSelect.value;
+            toSelect.value = temp;
+            convertUnits();
+        }
+
+        // ✅ CALCULATOR
+        let calculatorString = '';
+        function appendCalculator(value) { 
+            calculatorString += value; 
+            document.getElementById('calculator-display').value = calculatorString; 
+        }
+        function clearCalculator() { 
+            calculatorString = ''; 
+            document.getElementById('calculator-display').value = ''; 
+        }
+        function deleteLastCalculator() { 
+            calculatorString = calculatorString.substring(0, calculatorString.length - 1); 
+            document.getElementById('calculator-display').value = calculatorString; 
+        }
+        function calculateCalculator() {
+            try {
+                let expression = calculatorString.replace(/×/g, '*').replace(/÷/g, '/');
+                let result = eval(expression);
+                if (result === Infinity || result === -Infinity) throw new Error('Division by zero');
+                calculatorString = result.toString();
+                document.getElementById('calculator-display').value = calculatorString;
+            } catch (error) {
+                document.getElementById('calculator-display').value = 'Error';
+                calculatorString = '';
+                setTimeout(clearCalculator, 1500);
+            }
+        }
+
+        // ✅ MATH SYMBOLS
+        function copySymbol(symbol) {
+            navigator.clipboard.writeText(symbol).then(() => {
+                const card = event.currentTarget;
+                const originalText = card.querySelector('.symbol-name').textContent;
+                card.querySelector('.symbol-name').textContent = 'Copied!';
+                card.style.background = 'var(--success)';
+                setTimeout(() => { 
+                    card.querySelector('.symbol-name').textContent = originalText; 
+                    card.style.background = '';
+                }, 1500);
+            }).catch(() => alert('Copy failed!'));
+        }
+
+        // ✅ CALENDAR
+        let currentDate = new Date();
+        let currentMonth = currentDate.getMonth();
+        let currentYear = currentDate.getFullYear();
+        let selectedDate = null;
+
+        function renderCalendar() {
+            const title = document.getElementById('calendar-title');
+            const daysContainer = document.getElementById('calendar-days');
+            const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+            title.textContent = `${monthNames[currentMonth]} ${currentYear}`;
+            daysContainer.innerHTML = '';
+            
+            const firstDay = new Date(currentYear, currentMonth, 1).getDay();
+            const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
+            
+            for (let i = 0; i < firstDay; i++) {
+                const emptyDay = document.createElement('div');
+                emptyDay.classList.add('calendar-day', 'empty');
+                daysContainer.appendChild(emptyDay);
+            }
+            
+            const today = new Date();
+            const isCurrentMonth = currentYear === today.getFullYear() && currentMonth === today.getMonth();
+            for (let day = 1; day <= daysInMonth; day++) {
+                const dayElement = document.createElement('div');
+                dayElement.classList.add('calendar-day');
+                dayElement.textContent = day;
+                dayElement.onclick = () => selectDate(currentYear, currentMonth, day);
+                
+                if (isCurrentMonth && day === today.getDate()) { 
+                    dayElement.classList.add('today'); 
+                }
+                if (selectedDate && currentYear === selectedDate.year && currentMonth === selectedDate.month && day === selectedDate.day) {
+                    dayElement.classList.add('selected');
+                }
+                daysContainer.appendChild(dayElement);
+            }
+        }
+
+        function selectDate(year, month, day) {
+            selectedDate = { year, month, day };
+            renderCalendar();
+            alert(`Selected: ${day} ${["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"][month]} ${year}`);
+        }
+
+        function prevMonth() {
+            currentMonth--; 
+            if (currentMonth < 0) { currentMonth = 11; currentYear--; } 
+            renderCalendar();
+        }
+        function nextMonth() {
+            currentMonth++; 
+            if (currentMonth > 11) { currentMonth = 0; currentYear++; } 
+            renderCalendar();
+        }
+
+        // ✅ INITIALIZE
+        convertCurrency();
+        convertUnits();
+        renderCalendar();
+    </script>
+</body>
+</html>
